@@ -1,0 +1,29 @@
+{
+  "name": "@ataraxydevelopers/tested-backend-recipes",
+  "version": "0.1.0",
+  "description": "Small tested backend recipes for pagination, retries, uploads, jobs, and idempotency.",
+  "type": "module",
+  "engines": {
+    "node": ">=22"
+  },
+  "license": "MIT",
+  "author": "Ataraxy Developers",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/AtaraxyDevelopers/tested-backend-recipes.git"
+  },
+  "bugs": {
+    "url": "https://github.com/AtaraxyDevelopers/tested-backend-recipes/issues"
+  },
+  "scripts": {
+    "test": "node --test",
+    "demo": "node examples/demo.mjs"
+  },
+  "exports": "./src/index.mjs",
+  "files": [
+    "src",
+    "examples",
+    "README.md",
+    "LICENSE"
+  ]
+}
