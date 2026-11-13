@@ -1,0 +1,14 @@
+name: Release
+on:
+  push:
+    tags: ['v*']
+permissions:
+  contents: read
+jobs:
+  verify:
+    uses: AtaraxyDevelopers/reusable-release-workflows/.github/workflows/node-ci.yml@v0.1.1
+  release:
+    needs: verify
+    permissions:
+      contents: write
+    uses: AtaraxyDevelopers/reusable-release-workflows/.github/workflows/package-release.yml@v0.1.1

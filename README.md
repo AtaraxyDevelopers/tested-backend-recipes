@@ -9,7 +9,11 @@ An open-source project from [Ataraxy Developers](https://github.com/AtaraxyDevel
 
 ## Quick start
 
-Requires Node.js 22 or 24 and npm. Git is optional if you download the source ZIP.
+Install [Node.js](https://nodejs.org/en/download) 22 or 24 (npm is included). Check
+`node --version` and `npm --version` in your terminal. The commands below run from
+this repository's root folder, the one containing `package.json`.
+
+**With Git:**
 
 ```sh
 git clone https://github.com/AtaraxyDevelopers/tested-backend-recipes.git
@@ -17,6 +21,15 @@ cd tested-backend-recipes
 npm ci
 npm test
 ```
+
+**Without Git:** choose **Code → Download ZIP** on GitHub, extract the archive,
+and open a terminal in the extracted `tested-backend-recipes-main` folder (release archives may
+include the version in the folder name). Run `npm ci` and `npm test` there.
+Use the **source-code ZIP**, not an npm `.tgz` package, to follow this developer walkthrough.
+The install step may need internet access; the examples run locally afterward.
+
+On Windows PowerShell, if `npm.ps1` is blocked by execution policy, use `npm.cmd`
+in place of `npm` in these commands. No execution-policy change is required.
 
 ```sh
 npm run demo
@@ -35,19 +48,35 @@ license. Each function is independent and uses only Node.js built-ins.
 | mapJobs(items, worker, options)                   | Bounded concurrency; ordered fulfilled/rejected results            |
 | saveUpload(chunks, directory, options)            | Byte chunks, generated filename, byte cap, cleanup on failure      |
 
-```js
-import { paginate, retry } from './src/index.mjs';
-const page = paginate([{ id: 'a' }, { id: 'b' }], { limit: 1 });
-const next = paginate([{ id: 'a' }, { id: 'b' }], { after: page.nextCursor });
-const result = await retry(() => fetch('https://example.com'), {
-  attempts: 2,
-  shouldRetry: (error) => error instanceof TypeError,
-});
+Run a fully offline pagination-and-retry example:
+
+```sh
+node examples/quick-start.mjs
 ```
 
-The fetch example retries thrown network failures; HTTP error statuses need your
-own explicit classification. Avoid retrying non-idempotent operations without an
-idempotency mechanism.
+It prints first page `a`, next page `b`, two attempts, and `recovered`. To use the
+functions yourself, save this as `usage.mjs` in the repository root and run `node usage.mjs`:
+
+```js
+import { paginate, retry } from './src/index.mjs';
+const items = [{ id: 'a' }, { id: 'b' }];
+const page = paginate(items, { limit: 1 });
+const next = paginate(items, { after: page.nextCursor });
+let attempts = 0;
+const result = await retry(
+  async () => {
+    if (++attempts === 1) throw new Error('Synthetic temporary failure');
+    return 'recovered';
+  },
+  { attempts: 2, delayMs: 0 },
+);
+console.log(JSON.stringify({ first: page.data, next: next.data, attempts, result }));
+```
+
+This retry example uses a synthetic failure and needs no network connection. In a
+real HTTP client, classify response statuses explicitly: fetch rejects on network
+errors, while HTTP 4xx/5xx responses need your own handling. Only retry operations
+whose effects are safe to repeat, or use an idempotency mechanism.
 
 ## Scope and limitations
 
@@ -64,6 +93,10 @@ options. No content-type or malware claims are made.
 
 Tests cover pagination boundaries, bounded retries, concurrent duplicates,
 conflicting payloads, job concurrency, and partial-upload cleanup.
+
+## Expected first run
+
+The demo prints a paginated result, a recovered retry, one idempotent result, ordered job results, and an upload summary. The generated upload filename varies and temporary files are removed.
 
 ## Contributing and support
 
