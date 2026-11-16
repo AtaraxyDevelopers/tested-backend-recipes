@@ -1,6 +1,6 @@
 {
   "name": "@ataraxydevelopers/tested-backend-recipes",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Small tested backend recipes for pagination, retries, uploads, jobs, and idempotency.",
   "type": "module",
   "engines": {
@@ -24,6 +24,8 @@
     "src",
     "examples",
     "README.md",
-    "LICENSE"
+    "LICENSE",
+    "docs/brand",
+    "BRANDING.md"
   ]
 }

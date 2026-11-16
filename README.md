@@ -1,3 +1,5 @@
+<p><a href="https://ataraxydevelopers.com"><img src="docs/brand/ataraxy-developers-logo.png" alt="Ataraxy Developers — Turning Digital Visions Into Reality" width="520"></a></p>
+
 # Tested Backend Recipes
 
 [![CI](https://github.com/AtaraxyDevelopers/tested-backend-recipes/actions/workflows/ci.yml/badge.svg)](https://github.com/AtaraxyDevelopers/tested-backend-recipes/actions/workflows/ci.yml)
